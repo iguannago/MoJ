@@ -1,4 +1,6 @@
 var express = require('express');
+var nunjucks = require('nunjucks');
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -8,12 +10,18 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var test1 = require('./routes/test1');
+var hello_world = require('./routes/hello_world');
 
 var app = express();
 
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'nunjucks');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -26,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/test1', test1);
+app.use('/hello_world', hello_world);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
